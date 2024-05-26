@@ -1,5 +1,5 @@
-create schema JDBC_DAO;
-use JDBC_DAO;
+# create schema JDBC_DAO;
+# use JDBC_DAO;
 create table CUSTOMERS (
                            id int auto_increment,
                            name varchar(100),

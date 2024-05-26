@@ -1,4 +1,4 @@
-use JDBC_DAO;
+# use JDBC_DAO;
 
 delete from orders;
 delete from customers;

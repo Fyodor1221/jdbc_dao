@@ -1,6 +1,5 @@
 package ru.netology.jdbc_dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,10 +15,14 @@ import java.util.stream.Collectors;
 
 @Repository
 public class JdbcDaoRepository {
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final String query;
+    private final String SCRIPTFILENAME = "/myScript.sql";
 
-    private static final String SCRIPTFILENAME = "/myScript.sql";
+    public JdbcDaoRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.query = read(SCRIPTFILENAME);
+    }
 
     private static String read(String scriptFileName) {
         try (InputStream is = new ClassPathResource(scriptFileName).getInputStream();
@@ -35,7 +38,7 @@ public class JdbcDaoRepository {
         params.put("name", name);
 
         return this.namedParameterJdbcTemplate.query(
-                read(SCRIPTFILENAME),
+                this.query,
                 params,
                 (rs, rowNum) -> rs.getString("product_name")
         );
